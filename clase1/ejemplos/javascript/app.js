@@ -16,6 +16,7 @@ app.set('port', 3001)
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
-app.use("/clase1",require('./router/router'))
+app.use("/clase1/categoria",require('./router/categoria.router'))
+app.use("/clase1/producto",require('./router/producto.router'))
 
 module.exports = app
