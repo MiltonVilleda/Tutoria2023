@@ -1,28 +1,26 @@
 const { Router } = require('express')
-//const jwt = require('../middleware/jwt')
 const router = Router()
 
 const controller = require('../controller/categoria')
+const jwt = require('../middleware/validation')
 
 router.route('/hello')
     .get(controller.hello)
 
 router.route('/')
-    .get(controller.find_any)
-    .delete(controller.delete_any)
+    .get(jwt.validate_token, controller.find_any)
+    .post(jwt.validate_token, jwt.admin, controller.add)
+    .delete(jwt.validate_token, jwt.admin, controller.delete_any)
 
 //url params
 router.route('/findv0/:id')
-    .get(controller.find_onev0)
+    .get(jwt.validate_token, controller.find_onev0)
 
 router.route('/findv1/:id')
-    .get(controller.find_onev1)
+    .get(jwt.validate_token, controller.find_onev1)
 
 //query string
 router.route('/findv2')
-    .get(controller.find_onev2)
-
-router.route('/new')
-    .post(controller.add)
+    .get(jwt.validate_token, controller.find_onev2)
 
 module.exports = router

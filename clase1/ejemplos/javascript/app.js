@@ -5,18 +5,22 @@ require('dotenv').config()
 
 const app = express()
 
-/*
-app.options('*', cors())
-app.user(cors())
-*/
-
 app.set('port', 3001)
 
-//app.use(cors())
+/*
+    app.options('*', cors())
+app.user(cors())
+*/
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
-app.use("/clase1/categoria",require('./router/categoria.router'))
-app.use("/clase1/producto",require('./router/producto.router'))
+//jwt
+app.use("/clase1/categoria", require('./router/categoria.router'))
+//jwt
+app.use("/clase1/producto", require('./router/producto.router'))
+app.use("/clase1/login", require('./router/login.router'))
+//jwt
+app.use("/clase1/user", require('./router/user.router'))
+app.use("/clase1/admin", require('./router/admin.router'))
 
 module.exports = app

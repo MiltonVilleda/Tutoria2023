@@ -1,13 +1,15 @@
 const { Schema, model } = require('mongoose');
 
 const producto_schema = new Schema({
-    name: String
+    name: String,
+    precio: Number,
+    marca: String,
     /*name: {
         type: String,
         trim: true,
         required: true,
         unique: true
-    }*/,
+    }*/
     _categoria: Schema.Types.ObjectId
 }/*, {
     timestamp: true
