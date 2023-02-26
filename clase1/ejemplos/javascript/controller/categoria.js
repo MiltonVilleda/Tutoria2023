@@ -1,5 +1,6 @@
 require('../config/mongo')
 const categoria = require('../models/categoria')
+const producto = require('../models/producto')
 
 const controller = {}
 
@@ -60,6 +61,31 @@ controller.add = async (req, res) => {
 controller.delete_any = async (req, res) => {
     await categoria.deleteMany()
     return res.status(200).send({ message: 'Categorias eliminadas!'})
+}
+
+controller.delete = async (req, res) => {
+    try {
+        const id = req.params.id
+        //get default category
+        //find = [ {}, {}, ...]
+        //findOne = {}
+        const default_categoria = await categoria.findOne(
+            { name: "default" }
+        )
+        const _id_default = default_categoria._id.toHexString()
+        //update productos
+        await producto.updateMany(
+            { _categoria: id },
+            { $set: { _categoria: _id_default } }
+        )
+        //delete category
+        await categoria.deleteOne(
+            { _id: id }
+        )
+        return res.status(200).send({ message: 'Categoria eliminada!'})
+    } catch (error) {
+        return res.status(200).send({ message: 'Error al eliminar'})
+    }
 }
 
 module.exports = controller

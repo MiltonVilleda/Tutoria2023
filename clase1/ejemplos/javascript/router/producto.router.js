@@ -5,14 +5,16 @@ const controller = require('../controller/producto')
 const jwt = require('../middleware/validation')
 
 router.route('/')
-    .get(jwt.validate_token, controller.find_any)
-    .delete(jwt.validate_token, jwt.admin, controller.delete_any)
-
-router.route('/new')
+    .get(controller.find_any)
+    .post(controller.add)
+    .delete(controller.delete_any)
+    /*.get(jwt.validate_token, controller.find_any)
     .post(jwt.validate_token, jwt.admin, controller.add)
+    .delete(jwt.validate_token, jwt.admin, controller.delete_any)*/
 
 router.route('/detail')
-    .get(jwt.validate_token, controller.find_detail)
+    .get(controller.find_detail)
+    //.get(jwt.validate_token, controller.find_detail)
 
 router.route('/specific1')
     .get(controller.get_specific1)
@@ -67,5 +69,14 @@ router.route('/specific17')
 
 router.route('/update/:id')
     .put(jwt.validate_token, jwt.admin, controller.update_name)
+
+router.route('/addStock')
+    .post(controller.addStock)
+
+router.route('/sold_out')
+    .get(controller.sold_out)
+
+router.route('/best_seller')
+    .get(controller.best_seller)
 
 module.exports = router

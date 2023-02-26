@@ -183,4 +183,30 @@ controller.update_name = async (req, res) => {
     return res.status(200).send(producto_updated)
 }
 
+controller.addStock = async (req, res) => {
+    const id = req.body.id
+    const stock = req.body.stock
+    await producto.updateOne(
+        { _id: id },
+        { $inc: { stock: stock } }
+    )
+    return res.status(200).send({ message: 'Stock!'})
+}
+
+controller.sold_out = async (req, res) => {
+    const productos = await producto.find(
+        { stock: 0 }
+    )
+    return res.status(200).send(productos)
+}
+
+controller.best_seller = async (req, res) => {
+    const productos = await producto.find(
+        { ventas: { $gt: 0 } }
+    ).sort(
+        { ventas: -1 }
+    ).limit(10)
+    return res.status(200).send(productos)
+}
+
 module.exports = controller

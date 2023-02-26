@@ -8,9 +8,15 @@ router.route('/hello')
     .get(controller.hello)
 
 router.route('/')
-    .get(jwt.validate_token, controller.find_any)
+    .get(controller.find_any)
+    .post(controller.add)
+    .delete(controller.delete_any)
+    /*.get(jwt.validate_token, controller.find_any)
     .post(jwt.validate_token, jwt.admin, controller.add)
-    .delete(jwt.validate_token, jwt.admin, controller.delete_any)
+    .delete(jwt.validate_token, jwt.admin, controller.delete_any)*/
+
+router.route('/delete/:id')
+    .delete(controller.delete)
 
 //url params
 router.route('/findv0/:id')

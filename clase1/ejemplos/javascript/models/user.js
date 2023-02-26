@@ -10,21 +10,30 @@ const user_schema = new Schema({
     pw: {
         type: String,
         required: true
-    },/*
-    pago: {
-        type: String,
-        default: "estudiante",
     },
-    grado: {
-        type: String,
-        default: "no aplica"
-    },
-    carnet: {
-        type: Number,
-        default: -1
-    },*/
-    gustos: [
-        String
+    carrito: [
+        {
+            _producto: Schema.Types.ObjectId,
+            cantidad: Number
+        }
+    ],
+    facturas: [
+        {
+            fecha: {
+                type: Date,
+                default: Date.now()
+            },
+            productos: [
+                {
+                    _producto: {
+                        type: Schema.Types.ObjectId,
+                        ref: 'productos'
+                    },
+                    cantidad: Number
+                }
+            ],
+            total: Number
+        }
     ]
 })
 
