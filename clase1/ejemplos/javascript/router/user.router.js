@@ -21,4 +21,7 @@ router.route('/buy')
 router.route('/bills/:id_user')
     .get(controller.get_bills)
 
+router.route('/bill/:id_user/:id_bill')
+    .get(controller.get_bill)
+
 module.exports = router

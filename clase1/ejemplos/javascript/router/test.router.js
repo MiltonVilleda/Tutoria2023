@@ -3,7 +3,7 @@ const router = Router()
 
 const controller = require('../controller/test')
 
-router.route('/')
-    .post(controller.add)
+router.route('/:num')
+    .get(controller.armstrong)
 
 module.exports = router

@@ -3,15 +3,17 @@ const test = require('../models/test')
 
 const controller = {}
 
-controller.add = async (req, res) => {
-    const data = req.body
-    try {
-        const new_test = new test(data)
-        await new_test.save()
-        return res.status(200).send(new_test)
-    } catch (error) {
-        console.log(error)
-        return res.status(400).send({msg: 'error'})
+controller.armstrong = async (req, res) => {
+    const num = req.params.num
+    const potencia = num.length
+    let contador = 0
+    for (let x of num) {
+        contador += x**potencia
+    }
+    if (contador == num) {
+        return res.status(200).send({msg: `${num} es un numero de Armstrong`})
+    } else {
+        return res.status(200).send({msg: `${num} no es un numero de Armstrong, la suma es: ${contador}`})
     }
 }
 
