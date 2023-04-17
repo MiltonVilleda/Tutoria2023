@@ -1,16 +1,14 @@
 const express = require('express')
 const morgan = require('morgan')
 require('dotenv').config()
-//const cors = require('cors')
+const cors = require('cors')
 
 const app = express()
 
 app.set('port', 3001)
 
-/*
-    app.options('*', cors())
-app.user(cors())
-*/
+app.options('*', cors())
+app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
