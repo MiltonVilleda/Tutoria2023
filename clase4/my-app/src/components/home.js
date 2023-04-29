@@ -8,7 +8,7 @@ export default class Home extends Component {
                     <div className="col-6 p-5">
                         <div className="card">
                             <div className="card-body">
-                                <h1 className="text-center">Ejemplo React</h1>
+                                <h1 className="text-center">Ejemplo React, gitflow</h1>
                             </div>
                         </div>
                     </div>
