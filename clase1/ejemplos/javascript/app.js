@@ -23,4 +23,6 @@ app.use("/clase1/admin", require('./router/admin.router'))
 
 app.use("/clase1/test", require('./router/test.router'))
 
+app.use("/clase1/curso", require('./router/curso.router'))
+
 module.exports = app

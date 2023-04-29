@@ -29,6 +29,26 @@ export default class Navbar extends Component {
                                     New
                                 </Link>
                             </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to='/cursos'>
+                                    Cursos
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to='/asignacion'>
+                                    Asignacion
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to='/new2'>
+                                    Products
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to='/kart'>
+                                    Kart
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </div>

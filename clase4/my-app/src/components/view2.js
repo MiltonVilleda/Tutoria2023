@@ -11,7 +11,6 @@ export default function Form(props) {
         async function load() {
             let res = await axios.get('http://localhost:3001/clase1/categoria')
             setCategoria(res.data)
-            console.log(categorias)
         }
         load()
     }, [change])
