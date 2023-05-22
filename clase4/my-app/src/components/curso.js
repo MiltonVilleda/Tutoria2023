@@ -28,11 +28,11 @@ export default function Curso(props) {
                 asignar.push(curso.id)
             }
             console.log(asignar)
-            let res = await axios.post('http://localhost:3001/clase1/curso/asignar', {cursos: asignar})
-            if (res.status === 200) {
+            try {
+                let res = await axios.post('http://localhost:3001/clase1/curso/asignar', {cursos: asignar})
                 alert('Asignacion completada')
                 navigate('/asignacion', { replace:true })
-            } else {
+            } catch (error) {
                 alert('Error al crear')
             }
         } else {

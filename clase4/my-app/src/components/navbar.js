@@ -39,7 +39,7 @@ export default class Navbar extends Component {
                                     Asignacion
                                 </Link>
                             </li>
-                            <li className="nav-item">
+                            {/*<li className="nav-item">
                                 <Link className="nav-link active" aria-current="page" to='/new2'>
                                     Products
                                 </Link>
@@ -47,6 +47,16 @@ export default class Navbar extends Component {
                             <li className="nav-item">
                                 <Link className="nav-link active" aria-current="page" to='/kart'>
                                     Kart
+                                </Link>
+                            </li>*/}
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to='/user'>
+                                    User
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to='/graphs'>
+                                    Graphs
                                 </Link>
                             </li>
                         </ul>

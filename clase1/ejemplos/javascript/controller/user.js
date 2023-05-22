@@ -293,4 +293,14 @@ get_buffer = (definition) => {
     })
 }
 
+controller.getOne = async (req, res) => {
+    const id = req.query.id
+    try {
+        const current_user = await user.findById(id)
+        return res.status(200).send(current_user)
+    } catch (error) {
+        return res.status(400).send({ message: 'user not found'})
+    }
+}
+
 module.exports = controller

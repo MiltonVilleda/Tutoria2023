@@ -10,4 +10,7 @@ router.route('/user')
 router.route('/admin')
     .post(controller.admin_login)
 
+router.route('/getToken')
+    .get(controller.getToken)
+
 module.exports = router

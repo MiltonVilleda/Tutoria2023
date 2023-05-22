@@ -10,16 +10,15 @@ export default function Form(props) {
     const OnSubmit = async(e) => {
         e.preventDefault()
         if (name) {
-            let res = await axios.post('http://localhost:3001/clase1/categoria',
-                {
-                    name: name
-                }
-            )
-            if (res.status === 200) {
+            try {
+                let res = await axios.post('http://localhost:3001/clase1/categoria',
+                    {
+                        name: name
+                    }
+                )
                 alert('Added')
                 navigate('/view', { replace:true })
-                //setName('')
-            } else {
+            } catch (error) {
                 alert('Error al crear')
             }
         } else {

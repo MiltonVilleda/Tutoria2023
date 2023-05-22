@@ -5,7 +5,7 @@ const controller = require('../controller/user')
 const jwt = require('../middleware/validation')
 
 router.route('/')
-    .get(controller.hello)
+    .get(controller.getOne)
     /*.post(jwt.validate_token, jwt.admin, controller.add)
     .delete(jwt.validate_token, jwt.admin, controller.delete_all)*/
     .post(controller.add)

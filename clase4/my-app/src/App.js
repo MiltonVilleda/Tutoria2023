@@ -9,6 +9,8 @@ import Home from './components/home';
 import Cursos from './components/curso';
 import Asignacion from './components/asignacion';
 import Kart from './components/kart';
+import User from './components/user';
+import Graphs from './components/graphs';
 
 function App() {
   return (
@@ -17,12 +19,14 @@ function App() {
       <Routes>
         <Route path='/' Component={Home} />
         <Route path='/new' Component={Form}/>
-        <Route path='/new2' Component={Form2}/>
+        {/*<Route path='/new2' Component={Form2}/>*/}
         <Route path='/view' Component={() => <View tipo="Solo lectura"/>} />
         <Route path='/view2' Component={View2} />
-        <Route path='/kart' Component={Kart} />
+        {/*<Route path='/kart' Component={Kart} />*/}
         <Route path='/cursos' Component={Cursos} />
         <Route path='/asignacion' Component={Asignacion} />
+        <Route path='/user' Component={User} />
+        <Route path='/graphs' Component={Graphs} />
       </Routes>
     </BrowserRouter>
   );

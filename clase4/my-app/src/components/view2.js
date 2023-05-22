@@ -16,11 +16,11 @@ export default function Form(props) {
     }, [change])
 
     async function onDelete(id) {
-        let res = await axios.delete(`http://localhost:3001/clase1/categoria/delete/${id}`)
-        if (res.status === 200) {
+        try {
+            let res = await axios.delete(`http://localhost:3001/clase1/categoria/delete/${id}`)
             alert('Eliminado correctamente')
             setChange(!change)
-        } else {
+        } catch (error) {
             alert('Error al eliminar')
         }
     }
