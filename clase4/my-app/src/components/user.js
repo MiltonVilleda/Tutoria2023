@@ -5,9 +5,11 @@ import axios from 'axios'
 export default function Home(props) {
 
     const [usr, setUsr] = useState('')
+    const [foros, setForos] = useState([])
     const [change, setChange] = useState(false)
     const navigate = useNavigate()
 
+    //get user info
     useEffect(() => {
         async function getToken() {
             try {
@@ -24,18 +26,52 @@ export default function Home(props) {
         getToken()
     }, [change])
 
+    //get all foros
+    useEffect(() =>{
+        async function getForos() {
+            try {
+                let res = await axios.get('http://localhost:3001/clase1/foro')
+                console.log(res.data)
+                setForos(res.data)
+            } catch (error) {
+                alert(error)
+            }
+        }
+
+        getForos()
+    }, [change])
+
     function print() {
-        console.log(usr)
+        //console.log(usr)
+        console.log(foros)
+    }
+
+    function viewForo(id){
+        navigate(`/foro?id=${id}`)
     }
 
     return(
         <div className="container">
             <div className="row mt-5 justify-content-center align-middle">
-                <div className="col-6 p-5">
+                <div className="col-8 p-5">
                     <div className="card">
                         <div className="card-header">
                             <h1 className="text-center">Welcome {usr.name}!</h1>
-                            <button type="button" className="btn btn-primary btn-sm" onClick={print}>print</button>
+                            <button onClick={print} className="btn btn-primary">print</button>
+                        </div>
+                        <div className="card-body">
+                            <h2>Foros</h2>
+                            <table className="table">
+                                <tbody>
+                                    {
+                                        foros.map(foro =>
+                                            <tr key={foro._id} onClick={() => viewForo(foro._id)}>
+                                                <td>{foro.name}</td>
+                                            </tr>
+                                        )
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
