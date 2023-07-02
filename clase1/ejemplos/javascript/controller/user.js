@@ -19,15 +19,15 @@ controller.add = async (req, res) => {
     try {
         const new_user = new user(data);
         await new_user.save();
-        return res.status(200).send({ message: 'Usuario creado!'})
+        return res.status(200).send({ message: 'Usuario creado!' })
     } catch (error) {
-        return res.status(400).send({ message: 'Error al agregar!'})
+        return res.status(400).send({ message: 'Error al agregar!' })
     }
 }
 
 controller.delete_all = async (req, res) => {
     await user.deleteMany()
-    return res.status(200).send({ message: 'Usuarios eliminados!'})
+    return res.status(200).send({ message: 'Usuarios eliminados!' })
 }
 
 controller.addOneToCart = async (req, res) => {
@@ -39,21 +39,23 @@ controller.addOneToCart = async (req, res) => {
     if (!current_user) {
         await user.updateOne(
             { _id: id_user },
-            { $push: {
-                carrito: {
-                    _producto: id_producto,
-                    cantidad: 1
+            {
+                $push: {
+                    carrito: {
+                        _producto: id_producto,
+                        cantidad: 1
+                    }
                 }
-            } }
+            }
         )
-        return res.status(200).send({ message: 'Nuevo producto agregado!'})
+        return res.status(200).send({ message: 'Nuevo producto agregado!' })
     } else {
         await user.updateOne(
             { _id: id_user },
             { $inc: { "carrito.$[element].cantidad": 1 } },
-            { arrayFilters: [ { "element._producto": id_producto } ] }
+            { arrayFilters: [{ "element._producto": id_producto }] }
         )
-        return res.status(200).send({ message: 'Producto agregado!'})
+        return res.status(200).send({ message: 'Producto agregado!' })
     }
 }
 
@@ -65,17 +67,19 @@ controller.updateCart = async (req, res) => {
         await user.updateOne(
             { _id: id_user },
             { $set: { "carrito.$[element].cantidad": cantidad } },
-            { arrayFilters: [ 
-                { "element._producto": id_producto }
-             ] }
+            {
+                arrayFilters: [
+                    { "element._producto": id_producto }
+                ]
+            }
         )
-        return res.status(200).send({ message: 'Producto actualizado!'})
+        return res.status(200).send({ message: 'Producto actualizado!' })
     } else {
         await user.updateOne(
             { _id: id_user },
             { $pull: { carrito: { _producto: id_producto } } }
         )
-        return res.status(200).send({ message: 'Producto eliminado!'})
+        return res.status(200).send({ message: 'Producto eliminado!' })
     }
 }
 
@@ -86,7 +90,7 @@ controller.buy = async (req, res) => {
     let carrito = current_user.carrito
     let factura = []
     let total = 0
-    for (let item of carrito){
+    for (let item of carrito) {
         //actualizar stock y ventas del producto
         let compra = await producto.findOneAndUpdate(
             { _id: item._producto.toHexString(), stock: { $gte: item.cantidad } },
@@ -108,62 +112,71 @@ controller.buy = async (req, res) => {
                     cantidad: item.cantidad
                 }
             )
-            total += item.cantidad*compra.precio
+            total += item.cantidad * compra.precio
         }
     }
     await user.updateOne(
         { _id: id_user },
-        { $push: {
-            facturas: {
-                productos: factura,
-                total: total
+        {
+            $push: {
+                facturas: {
+                    productos: factura,
+                    total: total
+                }
             }
-        } }
+        }
     )
     console.log(factura)
     console.log(total)
-    return res.status(200).send({ message: 'Compra realizada!'})
+    return res.status(200).send({ message: 'Compra realizada!' })
 }
 
 controller.get_bills = async (req, res) => {
-    const id_user = req.params.id_user
-    const usr = await user.findById(id_user)
-    //const categorias = await categoria.find()
-    //const productos = await producto.find()
+    try {
+        //const id_user = mongoose.Types.ObjectId(req.params.id_user)
+        const id_user = req.params.id_user
+        const usr = await user.findById(id_user)
+        //const categorias = await categoria.find()
+        //const productos = await producto.find()
 
-    let factura_arr = []
-    for (let bill of usr.facturas) {
-        //console.log("Factura")
-        //console.log(bill)
-        let bill_temp = {
-            _id: bill._id,
-            fecha: bill.fecha,
-            total: bill.total,
-            productos: []
+        let factura_arr = []
+        for (let bill of usr.facturas) {
+            //console.log("Factura")
+            //console.log(bill)
+            let bill_temp = {
+                _id: bill._id,
+                fecha: bill.fecha,
+                total: bill.total,
+                productos: []
+            }
+            //console.log("productos")
+            for (let item of bill.productos) {
+                //console.log(item)
+                //producto_ = productos.find(element => element._id.toHexString() == item._producto.toHexString())
+                producto_ = await producto.findById(item._producto)
+                //console.log(producto_)
+                //categoria_ = categorias.find(element => element._id.toHexString() == producto_._categoria.toHexString())
+                categoria_ = await categoria.findById(producto_._categoria)
+                //console.log(categoria_)
+                bill_temp.productos.push(
+                    {
+                        name: producto_.name,
+                        precio: producto_.precio,
+                        marca: producto_.marca,
+                        categoria: categoria_.name,
+                        cantidad: item.cantidad,
+                        sub_total: item.cantidad * producto_.precio
+                    }
+                )
+            }
+            factura_arr.push(bill_temp)
         }
-        //console.log("productos")
-        for (let item of bill.productos) {
-            //console.log(item)
-            //producto_ = productos.find(element => element._id.toHexString() == item._producto.toHexString())
-            producto_ = await producto.findById(item._producto)
-            //console.log(producto_)
-            //categoria_ = categorias.find(element => element._id.toHexString() == producto_._categoria.toHexString())
-            categoria_ = await categoria.findById(producto_._categoria)
-            //console.log(categoria_)
-            bill_temp.productos.push(
-                {
-                    name: producto_.name,
-                    precio: producto_.precio,
-                    marca: producto_.marca,
-                    categoria: categoria_.name,
-                    cantidad: item.cantidad,
-                    sub_total: item.cantidad*producto_.precio
-                }
-            )
-        }
-        factura_arr.push(bill_temp)
+        return res.status(200).send(factura_arr)
+    } catch (error) {
+        console.log('error bills')
+        console.log(error)
+        return res.status(200).send({msg: false})
     }
-    return res.status(200).send(factura_arr)
 }
 
 controller.get_bill = async (req, res) => {
@@ -175,7 +188,7 @@ controller.get_bill = async (req, res) => {
         productos: []
     }
     let body = [
-        [{ text: 'Descripcion', style: 'tableHeader', colSpan: 4 },{},{},{}],
+        [{ text: 'Descripcion', style: 'tableHeader', colSpan: 4 }, {}, {}, {}],
         [
             { text: 'Cantidad', alignment: 'center' },
             { text: 'Producto', alignment: 'center' },
@@ -203,7 +216,7 @@ controller.get_bill = async (req, res) => {
                 marca: producto_.marca,
                 categoria: categoria_.name,
                 cantidad: item.cantidad,
-                sub_total: item.cantidad*producto_.precio
+                sub_total: item.cantidad * producto_.precio
             }
         )
         body.push(
@@ -211,11 +224,11 @@ controller.get_bill = async (req, res) => {
                 { text: item.cantidad, alignment: 'center' },
                 `${producto_.name} - ${producto_.marca}`,
                 { text: producto_.precio, alignment: 'center' },
-                { text: item.cantidad*producto_.precio, alignment: 'center' },
+                { text: item.cantidad * producto_.precio, alignment: 'center' },
             ]
         )
     }
-    body.push([{ text: 'Total', style: 'tableHeader', colSpan: 3 },{},{},{ text: bill.total, alignment: 'center' }])
+    body.push([{ text: 'Total', style: 'tableHeader', colSpan: 3 }, {}, {}, { text: bill.total, alignment: 'center' }])
     let dd = {
         content: [
             { text: 'Factura', style: 'header', alignment: 'center' },
@@ -227,7 +240,7 @@ controller.get_bill = async (req, res) => {
                         style: 'tableExample',
                         table: {
                             body: body,
-                            widths: [ '*', 'auto', 100, '*' ]
+                            widths: ['*', 'auto', 100, '*']
                         }
                     }
                 ]
@@ -263,7 +276,7 @@ controller.get_bill = async (req, res) => {
         fs.writeFileSync(`temp\\bill-${bill._id}.pdf`, buffer)
         //console.log(__dirname)
         let file_path = path.join(__dirname, '..', `\\temp\\bill-${bill._id}.pdf`)
-        fs.readFile(file_path, function(err, content) {
+        fs.readFile(file_path, function (err, content) {
             if (err) {
                 console.log(err)
                 res.writeHead(400, { 'Content-type': 'text/html' })
@@ -273,7 +286,7 @@ controller.get_bill = async (req, res) => {
                 res.end(content)
             }
         })
-    } catch(error){
+    } catch (error) {
         console.log(error)
         return res.status(400).send({ msg: 'Error al crear factura' })
     }
@@ -281,10 +294,10 @@ controller.get_bill = async (req, res) => {
 
 get_buffer = (definition) => {
     return new Promise((resolve, reject) => {
-        try{
+        try {
             //pdfMake.createPdf(definition).getDataUrl
             //pdfMake.createPdf(docDefinition).getBase64
-            pdfMake.createPdf(definition).getBuffer(function(buffer) {
+            pdfMake.createPdf(definition).getBuffer(function (buffer) {
                 resolve(buffer)
             })
         } catch (error) {
@@ -299,7 +312,7 @@ controller.getOne = async (req, res) => {
         const current_user = await user.findById(id)
         return res.status(200).send(current_user)
     } catch (error) {
-        return res.status(400).send({ message: 'user not found'})
+        return res.status(400).send({ message: 'user not found' })
     }
 }
 

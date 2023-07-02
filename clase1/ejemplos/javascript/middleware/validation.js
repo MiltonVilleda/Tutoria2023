@@ -3,16 +3,16 @@ const jwt = require("jsonwebtoken");
 const validations = {}
 
 validations.validate_token = (req, res, next) => {
-    console.log("Validando...");
+    //console.log("Validando...");
     const token = req.header("x-auth-token")
-    console.log(token);
+    //console.log(token);
     if (!token) {
         return res.status(401).json({ status: "error", msg: "There's no token..." })
     }
     try {
         const decoded = jwt.verify(token, "clase1", { algorithm: 'RS256' });
-        console.log("Decodificado:");
-        console.log(decoded);
+        /*console.log("Decodificado:");
+        console.log(decoded);*/
         req.body.token = decoded.data
         next()
     } catch (error) {

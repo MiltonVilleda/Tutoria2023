@@ -65,14 +65,14 @@ controller.admin_login = async (req, res) => {
 
 controller.getToken = (req, res) => {
     const token = req.query.token
-    console.log(token);
+    //console.log(token);
     if (!token) {
         return res.status(401).json({ status: "error", msg: "There's no token..." })
     }
     try {
         const decoded = jwt.verify(token, "clase1", { algorithm: 'RS256' });
-        console.log("Decodificado:");
-        console.log(decoded);
+        /*console.log("Decodificado:");
+        console.log(decoded);*/
         return res.status(200).json(decoded);
     } catch (error) {
         console.log(error);

@@ -57,7 +57,6 @@ export default function Home(props) {
                     <div className="card">
                         <div className="card-header">
                             <h1 className="text-center">Welcome {usr.name}!</h1>
-                            <button onClick={print} className="btn btn-primary">print</button>
                         </div>
                         <div className="card-body">
                             <h2>Foros</h2>

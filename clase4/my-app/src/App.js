@@ -12,6 +12,8 @@ import Kart from './components/kart';
 import User from './components/user';
 import Graphs from './components/graphs';
 import Foro from "./components/foro";
+import Bills from './components/bills';
+import Photos from './components/photos';
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
         <Route path='/user' Component={User} />
         <Route path='/graphs' Component={Graphs} />
         <Route path='/foro' Component={Foro} />
+        <Route path='/bills' Component={Bills} />
+        <Route path='/photos' Component={Photos} />
       </Routes>
     </BrowserRouter>
   );

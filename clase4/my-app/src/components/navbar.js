@@ -59,6 +59,16 @@ export default class Navbar extends Component {
                                     Graphs
                                 </Link>
                             </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to='/bills'>
+                                    Bills
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to='/photos'>
+                                    Photos
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
