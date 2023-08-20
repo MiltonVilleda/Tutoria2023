@@ -1,0 +1,32 @@
+version: '3.3'
+services:
+  mongo:
+    ports:
+      - '27017:27017'
+    image: mongo
+    networks:
+      - example
+
+  api:
+    ports:
+      - '3001:3001'
+    image: api
+    restart: always
+    networks:
+      - example
+    depends_on:
+      - mongo
+
+  front:
+    ports:
+      - '80:80'
+    image: frontend
+    restart: always
+    networks:
+      - example
+    depends_on:
+      - api
+
+networks:
+  example:
+    driver: bridge

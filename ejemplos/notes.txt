@@ -1,0 +1,22 @@
+-docker image
+docker pull IMG-NAME:TAG
+docker pull mongo
+
+-build image
+docker build -t IMG-NAME:VERSION PATH
+docker build -t api .
+docker build -t frontend .
+
+-docker container
+docker run --name CONTAINER-NAME -d -p CONTAINER-PORT:LOCAL-PORT IMG-NAME
+docker run --name mongodb -d -p 27017:27017 mongo
+docker run --name api -d -p 3001:3001 api
+docker run --name front -d -p 80:80 frontend
+
+-docker compose
+docker-compose up
+docker-compose -f FILE-NAME up
+docker-compose up -d
+docker-compose ps
+docker-compose stop
+docker-compose down
